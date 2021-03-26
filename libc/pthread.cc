@@ -1084,25 +1084,6 @@ int pthread_setaffinity_np(pthread_t thread, size_t cpusetsize,
 int sched_setaffinity(pid_t pid, size_t cpusetsize,
         cpu_set_t *cpuset)
 {
-    sched::thread *t;
-    if (pid == 0) {
-        t = sched::thread::current();
-    } else {
-        t = sched::thread::find_by_id(pid);
-        if (!t) {
-            errno = ESRCH;
-            return -1;
-        }
-        // TODO: After the thread was found, if it exits the code below
-        // may crash. Perhaps we should have a version of find_by_id(),
-        // with_thread_by_id(pid, func), which holds thread_map_mutex while
-        // func runs.
-    }
-    int err = setaffinity(t, cpusetsize, cpuset);
-    if (err) {
-        errno = err;
-        return -1;
-    }
     return 0;
 }
 
