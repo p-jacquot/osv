@@ -131,10 +131,14 @@ all: $(out)/vmlinuz.bin
 endif
 .PHONY: all
 
-links:
+links: 
 	$(call very-quiet, ln -nsf $(notdir $(out)) $(outlink))
 	$(call very-quiet, ln -nsf $(notdir $(out)) $(outlink2))
 .PHONY: links
+
+custom-apps-links:
+	ln -s $(PWD)/custom_apps/p-omp apps/p-omp
+	ln -s $(PWD)/custom_apps/p-threads apps/p-threads
 
 check:
 	./scripts/build check
